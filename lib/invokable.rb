@@ -2,7 +2,7 @@ require 'invokable/version'
 
 # TODO: Add curry, memoize, transducers?
 module Invokable
-  # If object responds to `call` convert into a Proc that takes a key and returns the value of the Hash for that key.
+  # If object responds to `call` convert into a Proc forwards it's arguments along to `call`.
   #
   # @return [Proc]
   def to_proc
