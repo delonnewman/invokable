@@ -1,3 +1,5 @@
+![Ruby](https://github.com/delonnewman/invokable/workflows/Ruby/badge.svg)
+
 # Invokable
 
 Treat any Object, Hashes, Arrays, and Sets as Procs (like Enumerable but for Procs)
