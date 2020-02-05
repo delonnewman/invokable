@@ -62,7 +62,7 @@ many one method objects out thre (e.g. ServiceObjects) that are essentially func
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'data-functions'
+gem 'invokable'
 ```
 
 And then execute:
@@ -71,7 +71,7 @@ And then execute:
 
 Or install it yourself as:
 
-    > gem install data-functions
+    > gem install invokable
 
 # See Also
 
