@@ -1,5 +1,6 @@
 require "bundler/setup"
-require "data/functions"
+require "invokable"
+require "invokable/data"
 
 RSpec.configure do |config|
   # Enable flags like --only-failures and --next-failure
