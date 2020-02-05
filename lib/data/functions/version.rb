@@ -1,4 +1,4 @@
-module Data
+class Data
   module Functions
     VERSION = "0.1.0"
   end

@@ -1,3 +1,5 @@
+require 'set'
+
 class Set
   # Convert Set into a Proc that takes a value and returns true if the value is an element of the set or false otherwise.
   #
