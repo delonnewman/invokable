@@ -1,5 +1,0 @@
-require "data/functions/version"
-require "data/functions/object"
-require "data/functions/hash"
-require "data/functions/set"
-require "data/functions/array"
