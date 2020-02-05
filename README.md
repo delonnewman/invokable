@@ -71,8 +71,8 @@ Or install it yourself as:
 
 # See Also
 
-    - [Clojure](https://clojure.org)
-    - [Arc](http://www.arclanguage.org)
+  - [Clojure](https://clojure.org)
+  - [Arc](http://www.arclanguage.org)
 
 # License
 
