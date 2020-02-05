@@ -84,6 +84,7 @@ Or install it yourself as:
 # TODO
 
   - add support for `curry`, `memoize` and maybe transducers.
+  - benchmark Invokable#to_proc
 
 # License
 
