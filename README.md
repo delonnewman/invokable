@@ -1,6 +1,6 @@
 # Invokable
 
-Treat Hashes, Arrays, Sets and Objects as Functions
+Treat any Object, Hashes, Arrays, and Sets as Procs (like Enumerable but for Procs)
 
 # Synopsis
 
