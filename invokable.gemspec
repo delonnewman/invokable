@@ -1,16 +1,16 @@
 lib = File.expand_path("../lib", __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "data/functions/version"
+require "invokable/version"
 
 Gem::Specification.new do |spec|
-  spec.name          = "data-functions"
-  spec.version       = Data::Functions::VERSION
+  spec.name          = "invokable"
+  spec.version       = Invokable::VERSION
   spec.authors       = ["Delon Newman"]
   spec.email         = ["contact@delonnewman.name"]
 
-  spec.summary       = %q{Treat Hashes, Arrays, Sets, and Objects as functions}
+  spec.summary       = %q{Treat any Object as a Proc (like Enumerable but for Proc-like objects)}
   spec.description   = spec.summary
-  spec.homepage      = "https://github.com/delonnewman/data-functions"
+  spec.homepage      = "https://github.com/delonnewman/invokable"
   spec.license       = "MIT"
 
   # Prevent pushing this gem to RubyGems.org. To allow pushes either set the 'allowed_push_host'
@@ -21,7 +21,7 @@ Gem::Specification.new do |spec|
     spec.metadata["homepage_uri"] = spec.homepage
     spec.metadata["source_code_uri"] = spec.homepage
     spec.metadata["changelog_uri"] = "#{spec.homepage}#changelog"
-    spec.metadata["documentation_uri"] = "https://www.rubydoc.info/gems/data-functions"
+    spec.metadata["documentation_uri"] = "https://www.rubydoc.info/gems/invokable"
   else
     raise "RubyGems 2.0 or newer is required to protect against " \
       "public gem pushes."
