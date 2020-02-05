@@ -1,35 +1,37 @@
-# Data::Functions
+# Invokable
 
 Treat Hashes, Arrays, Sets and Objects as Functions
 
 # Synopsis
 
 ```ruby
-  require 'data/functions/hash'
+  require 'invokable/hash'
 
   number_names = { 1 => "One", 2 => "Two", 3 => "Three" }
   [1, 2, 3, 4].map(&number_names) # => ["One", "Two", "Three", nil]
 ```
 
 ```ruby
-  require 'data/functions/array'
+  require 'invokable/array'
 
   alpha = ('a'..'z').to_a
   [1, 2, 3, 4].map(&alpha) # => ["b", "c", "d", "e"]
 ```
 
 ```ruby
-  require 'data/functions/set'
+  require 'invokable/set'
 
   favorite_numbers = Set[3, Math::PI]
   [1, 2, 3, 4].select(&favorite_numbers) # => [3]
 ```
 
 ```ruby
-  require 'data/functions/object'
+  require 'invokable'
 
   # service objects
   class GetDataFromSomeService
+    include Invokable
+
     def call(user)
       # do the dirt
     end
@@ -39,19 +41,21 @@ Treat Hashes, Arrays, Sets and Objects as Functions
   User.all.map(&data_for_user)
 ```
 
+Use as much or a little as you need:
+
 ```ruby
-require 'data/functions/hash' # loads hash patch
-require 'data/functions/array' # loads array patch
-require 'data/functions/set' # loads set patch
-require 'data/functions/object' # loads object patch
-require 'data/functions' # loads all patches
+require 'invokable'       # loads Invokable module
+require 'invokable/hash'  # loads hash patch
+require 'invokable/array' # loads array patch
+require 'invokable/set'   # loads set patch
+require 'invokable/data'  # loads all patches
 ```
 
 # Why?
 
 A function is a mapping of one value to another with the additional constraint that for the one input value you will
-always get the same output value. So, conceptually, Ruby Hashes, Arrays, Sets, and Objects (when treated immutably)
-are all functions. Why not treat them as such?
+always get the same output value. So, conceptually, Ruby Hashes, Arrays, and Sets are all functions. Also, there are
+many one method objects out thre (e.g. ServiceObjects) that are essentially functions. Why not treat them as such?
 
 # Installation
 
@@ -73,6 +77,10 @@ Or install it yourself as:
 
   - [Clojure](https://clojure.org)
   - [Arc](http://www.arclanguage.org)
+
+# TODO
+
+  - add support for `curry`, `memoize` and maybe transducers.
 
 # License
 
