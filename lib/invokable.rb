@@ -15,4 +15,8 @@ module Invokable
       raise "Don't know how to convert #{self.inspect} into a Proc"
     end
   end
+
+  def curry
+    to_proc.curry
+  end
 end
