@@ -54,6 +54,12 @@ require 'invokable/set'   # loads set patch
 require 'invokable/data'  # loads all patches
 ```
 
+## Why?
+
+A function is a mapping of one value to another with the additional constraint that for the one input value you will
+always get the same output value. So, conceptually, Ruby Hashes, Arrays, and Sets are all functions. Also, there are
+many one method objects out there (e.g. ServiceObjects) that are essentially functions. Why not treat them as such?
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -69,12 +75,6 @@ And then execute:
 Or install it yourself as:
 
     > gem install invokable
-
-## Why?
-
-A function is a mapping of one value to another with the additional constraint that for the one input value you will
-always get the same output value. So, conceptually, Ruby Hashes, Arrays, and Sets are all functions. Also, there are
-many one method objects out there (e.g. ServiceObjects) that are essentially functions. Why not treat them as such?
 
 ## API
 
