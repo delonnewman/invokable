@@ -17,14 +17,15 @@ module Invokable
     end
   end
 
-  # Return a curried proc. If the optional arity argument is given, it determines the number of arguments.
+  # Return a curried proc. If the optional `arity` argument is given, it determines the number of arguments.
   # A curried proc receives some arguments. If a sufficient number of arguments are supplied, it passes the
   # supplied arguments to the original proc and returns the result. Otherwise, returns another curried proc
   # that takes the rest of arguments.
   #
   # @see https://ruby-doc.org/core-2.7.0/Proc.html#method-i-curry Proc#curry
+  # @param arity [Number]
   # @return [Proc]
-  def curry(*args)
-    to_proc.curry(*args)
+  def curry(arity = nil)
+    to_proc.curry(arity)
   end
 end
