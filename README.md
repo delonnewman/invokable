@@ -62,7 +62,7 @@ many one method objects out there (e.g. ServiceObjects) that are essentially fun
 
 # API
 
-## to_proc -> a_proc
+## `to_proc -> Proc`
 
 ```ruby
 hash = { a: 1, b, 2 }
@@ -76,8 +76,7 @@ returning a proc that passes it's arguments to the object's `call` method. When 
 loaded `Hash#call` is mapped to `Hash#dig`, `Array#call` is mapped to `Array#at`, and `Set#call`
 is mapped to `Set#include?`.
 
-## curry -> a_proc
-## curry(arity) -> a_proc
+## `curry([arity]) -> Proc`
 
 Returns a curried proc. If the `arity` is given, it determines the number of arguments.
 (see [Proc#curry](https://ruby-doc.org/core-2.7.0/Proc.html#method-i-curry)).
