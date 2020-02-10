@@ -54,6 +54,22 @@ require 'invokable/set'   # loads set patch
 require 'invokable/data'  # loads all patches
 ```
 
+## Installation
+
+Add this line to your application's Gemfile:
+
+```ruby
+gem 'invokable'
+```
+
+And then execute:
+
+    > bundle
+
+Or install it yourself as:
+
+    > gem install invokable
+
 ## Why?
 
 A function is a mapping of one value to another with the additional constraint that for the one input value you will
@@ -84,22 +100,6 @@ Returns a curried proc. If the `arity` is given, it determines the number of arg
 ### `memoize => Proc`
 
 Returns a memoized proc, that is, a proc that caches it return values by it's arguments.
-
-## Installation
-
-Add this line to your application's Gemfile:
-
-```ruby
-gem 'invokable'
-```
-
-And then execute:
-
-    > bundle
-
-Or install it yourself as:
-
-    > gem install invokable
 
 ## See Also
 
