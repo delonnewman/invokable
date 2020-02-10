@@ -4,7 +4,7 @@ require 'invokable/version'
 module Invokable
   # If object responds to `call` convert into a Proc forwards it's arguments along to `call`.
   #
-  # @see [Proc#call]
+  # @see https://ruby-doc.org/core-2.7.0/Proc.html#method-i-call Proc#call
   # @return [Proc]
   def to_proc
     if respond_to?(:call)
@@ -22,7 +22,7 @@ module Invokable
   # supplied arguments to the original proc and returns the result. Otherwise, returns another curried proc
   # that takes the rest of arguments.
   #
-  # @see [Proc#curry]
+  # @see https://ruby-doc.org/core-2.7.0/Proc.html#method-i-curry Proc#curry
   # @return [Proc]
   def curry(*args)
     to_proc.curry(*args)
