@@ -60,6 +60,28 @@ A function is a mapping of one value to another with the additional constraint t
 always get the same output value. So, conceptually, Ruby Hashes, Arrays, and Sets are all functions. Also, there are
 many one method objects out there (e.g. ServiceObjects) that are essentially functions. Why not treat them as such?
 
+# API
+
+## to_proc -> a_proc
+
+```ruby
+hash = { a: 1, b, 2 }
+hash.class          # => Hash
+hash.to_proc.class  # => Proc
+[:a, :b].map(&hash) # => [1, 2]
+```
+
+Convert an object into a proc. When the `Invokable` module is included in a class it will do this by
+returning a proc that passes it's arguments to the object's `call` method. When `invokable/data` is
+loaded `Hash#call` is mapped to `Hash#dig`, `Array#call` is mapped to `Array#at`, and `Set#call`
+is mapped to `Set#include?`.
+
+## curry -> a_proc
+## curry(arity) -> a_proc
+
+Returns a curried proc. If the `arity` is given, it determines the number of arguments.
+(see [Proc#curry](https://ruby-doc.org/core-2.7.0/Proc.html#method-i-curry)).
+
 # Installation
 
 Add this line to your application's Gemfile:
@@ -83,7 +105,7 @@ Or install it yourself as:
 
 # TODO
 
-  - add support for `curry`, `memoize` and maybe transducers.
+  - add support for `memoize` and maybe transducers.
   - benchmark Invokable#to_proc
 
 # License
