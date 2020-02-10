@@ -2,5 +2,5 @@ require_relative '../invokable'
 
 class Hash
   include Invokable
-  alias call []
+  alias call dig
 end
