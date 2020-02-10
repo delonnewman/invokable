@@ -81,6 +81,10 @@ is mapped to `Set#include?`.
 Returns a curried proc. If the `arity` is given, it determines the number of arguments.
 (see [Proc#curry](https://ruby-doc.org/core-2.7.0/Proc.html#method-i-curry)).
 
+### `memoize => Proc`
+
+Returns a memoized proc, that is, a proc that caches it return values by it's arguments.
+
 ## Installation
 
 Add this line to your application's Gemfile:
