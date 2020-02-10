@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.authors       = ["Delon Newman"]
   spec.email         = ["contact@delonnewman.name"]
 
-  spec.summary       = %q{Treat any Object, Hashes, Arrays and Sets as Procs (like Enumerable but for Proc-like objects)}
+  spec.summary       = %q{Objects are functions! Treat any Object, Hashes, Arrays and Sets as Procs (like Enumerable but for Proc-like objects)}
   spec.description   = spec.summary
   spec.homepage      = "https://github.com/delonnewman/invokable"
   spec.license       = "MIT"

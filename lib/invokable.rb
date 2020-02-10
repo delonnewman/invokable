@@ -1,6 +1,5 @@
 require 'invokable/version'
 
-# TODO: Add memoize, transducers?
 module Invokable
   # If object responds to `call` convert into a Proc forwards it's arguments along to `call`.
   #
@@ -27,5 +26,15 @@ module Invokable
   # @return [Proc]
   def curry(arity = nil)
     to_proc.curry(arity)
+  end
+
+  # Return a memoized proc, that is, a proc that caches it's return values by it's arguments.
+  #
+  # @return [Proc]
+  def memoize
+    Proc.new do |*args|
+      @memo ||= {}
+      @memo[args.hash] ||= call(*args)
+    end
   end
 end

@@ -3,7 +3,7 @@
 
 # Invokable
 
-Treat any Object, Hashes, Arrays, and Sets as Procs (like Enumerable but for Procs)
+Objects are functions! Treat any Object, Hashes, Arrays, and Sets as Procs (like Enumerable but for Procs)
 
 # Synopsis
 
@@ -40,7 +40,7 @@ Treat any Object, Hashes, Arrays, and Sets as Procs (like Enumerable but for Pro
     end
   end
 
-  data_for_user = GetDataFromSomeService.new
+  data_for_user = GetDataFromSomeService.new.memoize # 'memoize' makes a proc that caches results
   User.all.map(&data_for_user)
 ```
 
