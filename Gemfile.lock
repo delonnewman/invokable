@@ -26,6 +26,7 @@ GEM
       diff-lcs (>= 1.2.0, < 2.0)
       rspec-support (~> 3.9.0)
     rspec-support (3.9.2)
+    yard (0.9.24)
 
 PLATFORMS
   ruby
@@ -36,6 +37,7 @@ DEPENDENCIES
   pry
   rake (~> 10.0)
   rspec (~> 3.0)
+  yard
 
 BUNDLED WITH
    1.17.3
