@@ -5,7 +5,7 @@
 
 Objects are functions! Treat any Object, Hashes, Arrays, and Sets as Procs (like Enumerable but for Procs)
 
-# Synopsis
+## Synopsis
 
 ```ruby
   require 'invokable/hash'
@@ -54,15 +54,15 @@ require 'invokable/set'   # loads set patch
 require 'invokable/data'  # loads all patches
 ```
 
-# Why?
+## Why?
 
 A function is a mapping of one value to another with the additional constraint that for the one input value you will
 always get the same output value. So, conceptually, Ruby Hashes, Arrays, and Sets are all functions. Also, there are
 many one method objects out there (e.g. ServiceObjects) that are essentially functions. Why not treat them as such?
 
-# API
+## API
 
-## `to_proc -> Proc`
+### `to_proc => Proc`
 
 ```ruby
 hash = { a: 1, b, 2 }
@@ -76,12 +76,12 @@ returning a proc that passes it's arguments to the object's `call` method. When 
 loaded `Hash#call` is mapped to `Hash#dig`, `Array#call` is mapped to `Array#at`, and `Set#call`
 is mapped to `Set#include?`.
 
-## `curry([arity]) -> Proc`
+### `curry(arity = nil) => Proc`
 
 Returns a curried proc. If the `arity` is given, it determines the number of arguments.
 (see [Proc#curry](https://ruby-doc.org/core-2.7.0/Proc.html#method-i-curry)).
 
-# Installation
+## Installation
 
 Add this line to your application's Gemfile:
 
@@ -97,16 +97,15 @@ Or install it yourself as:
 
     > gem install invokable
 
-# See Also
+## See Also
 
   - [Clojure](https://clojure.org)
   - [Arc](http://www.arclanguage.org)
 
-# TODO
+## TODO
 
-  - add support for `memoize` and maybe transducers.
   - benchmark Invokable#to_proc
 
-# License
+## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
