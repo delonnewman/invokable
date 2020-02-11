@@ -1,6 +1,6 @@
 module Invokable
   module Compose
-    # Return a proc that is the composition of this proc and the given `invokable`.
+    # Return a proc that is the composition of this invokable and the given `invokable`.
     # The returned proc takes a variable number of arguments, calls `invokable` with
     # them then calls this proc with the result.
     #
@@ -11,7 +11,7 @@ module Invokable
       end
     end
 
-    # Return a proc that is the composition of this proc and the given `invokable`.
+    # Return a proc that is the composition of this invokable and the given `invokable`.
     # The returned proc takes a variable number of arguments, calls `invokable` with
     # them then calls this proc with the result.
     #

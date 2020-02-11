@@ -47,18 +47,18 @@ Objects are functions! Treat any Object, Hashes, Arrays, and Sets as Procs (like
 Use as much or a little as you need:
 
 ```ruby
-require 'invokable'       # loads Invokable module
-require 'invokable/hash'  # loads hash patch
-require 'invokable/array' # loads array patch
-require 'invokable/set'   # loads set patch
-require 'invokable/data'  # loads all patches
+require 'invokable'         # loads Invokable module
+require 'invokable/hash'    # loads hash patch
+require 'invokable/array'   # loads array patch
+require 'invokable/set'     # loads set patch
+require 'invokable/data'    # loads hash, array, and set patches
 ```
 
 ## Why?
 
 A function is a mapping of one value to another with the additional constraint that for the one input value you will
 always get the same output value. So, conceptually, Ruby Hashes, Arrays, and Sets are all functions. Also, there are
-many one method objects out there (e.g. ServiceObjects) that are essentially functions. Why not treat them as such?
+many one method objects out there (e.g. Service Objects) that are essentially functions. Why not treat them as such?
 
 ## Installation
 
@@ -100,6 +100,14 @@ Returns a curried proc. If the `arity` is given, it determines the number of arg
 ### `memoize => Proc`
 
 Returns a memoized proc, that is, a proc that caches it return values by it's arguments.
+
+### `<<(invokable) => Proc`
+
+Returns a proc that is a composition of this invokable and the given invokable.
+
+### `>>(invokable) => Proc`
+
+Returns a proc that is a composition of this invokable and the given invokable.
 
 ## See Also
 
