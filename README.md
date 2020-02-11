@@ -99,7 +99,7 @@ Returns a curried proc. If the `arity` is given, it determines the number of arg
 
 ### `memoize => Proc`
 
-Returns a memoized proc, that is, a proc that caches it return values by it's arguments.
+Returns a memoized proc, that is, a proc that caches it's return values by it's arguments.
 
 ### `<<(invokable) => Proc`
 
