@@ -32,14 +32,14 @@ RSpec.describe Invokable do
     end
   end
 
-  context 'Invokable#memoize' do
+  context 'Core#memoize' do
     class SlowServiceObject
       include Invokable
 
       attr_reader :duration
 
       def initialize
-        @duration = (1..5).to_a.sample
+        @duration = (1..3).to_a.sample
       end
 
       def call(x)
@@ -65,6 +65,38 @@ RSpec.describe Invokable do
         expect(y).to eq(y_)
         expect(y).to eq(y__)
         expect(object.call(int)).to eq(memoized.call(int))
+      end
+    end
+  end
+
+  context 'Compose' do
+    class Add
+      include Invokable
+      def call(x)
+        x + x
+      end
+    end
+
+    class Sq
+      include Invokable
+      def call(x)
+        x * x
+      end
+    end
+
+    context '<<' do
+      it 'should compose to the left' do
+        for_all Integer do |int|
+          expect((Add.new << Sq.new).call(int)).to eq((int * int) + (int * int))
+        end
+      end
+    end
+
+    context '>>' do
+      it 'should compose to the right' do
+        for_all Integer do |int|
+          expect((Add.new >> Sq.new).call(int)).to eq((int + int) * (int + int))
+        end
       end
     end
   end
