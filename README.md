@@ -51,7 +51,7 @@ require 'invokable'         # loads Invokable module
 require 'invokable/hash'    # loads hash patch
 require 'invokable/array'   # loads array patch
 require 'invokable/set'     # loads set patch
-require 'invokable/data'    # loads hash, array, and set patches
+require 'invokable/data'    # loads hash and set patches
 ```
 
 ## Why?
