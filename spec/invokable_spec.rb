@@ -100,4 +100,17 @@ RSpec.describe Invokable do
       end
     end
   end
+
+  context 'Core#arity' do
+    class Arity
+      include Invokable
+
+      def call(a, b, c)
+      end
+    end
+
+    it 'should return the arity of the call method' do
+      expect(Arity.new.arity).to eq 3
+    end
+  end
 end

@@ -8,46 +8,76 @@ Objects are functions! Treat any Object, Hashes, Arrays, and Sets as Procs (like
 ## Synopsis
 
 ```ruby
-  require 'invokable/hash'
+require 'invokable'
+require 'invokable/hash'
 
-  number_names = { 1 => "One", 2 => "Two", 3 => "Three" }
-  [1, 2, 3, 4].map(&number_names) # => ["One", "Two", "Three", nil]
+number_names = { 1 => "One", 2 => "Two", 3 => "Three" }
+[1, 2, 3, 4].map(&number_names) # => ["One", "Two", "Three", nil]
 ```
 
 ```ruby
-  require 'invokable/array'
+require 'invokable'
+require 'invokable/array'
 
-  alpha = ('a'..'z').to_a
-  [1, 2, 3, 4].map(&alpha) # => ["b", "c", "d", "e"]
+alpha = ('a'..'z').to_a
+[1, 2, 3, 4].map(&alpha) # => ["b", "c", "d", "e"]
 ```
 
 ```ruby
-  require 'invokable/set'
+require 'invokable'
+require 'invokable/set'
 
-  favorite_numbers = Set[3, Math::PI]
-  [1, 2, 3, 4].select(&favorite_numbers) # => [3]
+favorite_numbers = Set[3, Math::PI]
+[1, 2, 3, 4].select(&favorite_numbers) # => [3]
 ```
 
 ```ruby
-  require 'invokable'
+# service objects
+require 'invokable'
 
-  # service objects
-  class GetDataFromSomeService
-    include Invokable
+class GetDataFromSomeService
+  include Invokable
 
-    def call(user)
-      # do the dirt
-    end
+  def call(user)
+    # do the dirt
+  end
+end
+
+data_for_user = GetDataFromSomeService.new.memoize # 'memoize' makes a proc that caches results
+User.all.map(&data_for_user)
+```
+```ruby
+# command objects that enclose state, can be treated as automatically curried functions.
+require 'invokable'
+require 'invokable/command'
+
+class TwitterPoster
+  include Invokable::Command
+
+  enclose do |model|
+    @model = model
   end
 
-  data_for_user = GetDataFromSomeService.new.memoize # 'memoize' makes a proc that caches results
-  User.all.map(&data_for_user)
+  def call(user)
+    # do the dirt
+    ...
+    TwitterStatus.new(user, data)
+  end
+end
+
+TwitterPoster.call(Model.find(1)) # => #<TwitterPoster ...>
+TwitterPoster.call(Model.find(1), current_user) # => #<TwitterStatus ...>
+
+# both the class and it's instances can be used any where Procs are.
+
+Model.where(created_at: Date.today).map(&:TwitterPoster) # => [#<TwitterPoster ...>, ...]
 ```
 
 Use as much or a little as you need:
 
 ```ruby
 require 'invokable'         # loads Invokable module
+require 'invokable/command' # loads Invokable::Command module
 require 'invokable/hash'    # loads hash patch
 require 'invokable/array'   # loads array patch
 require 'invokable/set'     # loads set patch

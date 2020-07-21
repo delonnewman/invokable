@@ -36,5 +36,14 @@ module Invokable
         @memo[args.hash] ||= call(*args)
       end
     end
+
+    # Return the arity (i.e. the number of arguments) of the `call` method.
+    #
+    # @version 0.5.0
+    # @see https://ruby-doc.org/core-2.7.1/Proc.html#method-i-arity Proc#arity
+    # @return [Integer]
+    def arity
+      method(:call).arity
+    end
   end
 end
