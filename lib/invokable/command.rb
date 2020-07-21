@@ -31,6 +31,8 @@ module Invokable
       #
       # @return [Integer]
       def initializer_arity
+        return @initializer_arity if @initializer_arity
+
         @initializer ? @initializer.arity : 0
       end
   
