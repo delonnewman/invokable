@@ -34,14 +34,6 @@ module Invokable
         @initializer ? @initializer.arity : 0
       end
   
-      # To specify any enclosed state
-      def enclose(&block)
-        raise 'A block is required' if block.nil?
-  
-        @initializer = block
-        define_method :initialize, &block
-      end
-  
       # Handle automatic currying--will accept either the initializer arity or the total arity of the class. If
       # the initializer arity is used return a class instance. If the total arity is used instantiate the class
       # and return the results of the `call` method.
@@ -57,7 +49,64 @@ module Invokable
           call_args = args.slice(initializer_arity, args.length)
           new(*init_args).call(*call_args)
         else
-          raise "Wrong number of arguments expected #{initializer_arity} or #{arity}, got: #{args.length}"
+          raise ArgumentError, "wrong number of arguments (given #{args.length}, expected #{initializer_arity} or #{arity})"
+        end
+      end
+
+      # Specify any enclosed state with a block or named attributes
+      # 
+      # @example
+      #   class TwitterPater
+      #     include Invokable::Command
+      #
+      #     enclose :api_key
+      #
+      #     def call(user)
+      #       # interact with twitter, return results
+      #     end
+      #   end
+      #
+      #   TwitterPater.new(API_KEY).call(User.find(1))
+      #   TwitterPater.new(API_KEY).api_key == API_KEY # => true
+      #
+      #   class TwitterPater
+      #     include Invokable::Command
+      #
+      #     enclose do |api_key|
+      #       @api_key = api_key
+      #     end
+      #
+      #     def call(user)
+      #       # interact with twitter, return results
+      #     end
+      #   end
+      #
+      #   TwitterPater.new(API_KEY).call(User.find(1))
+      #   TwitterPater.new(API_KEY).api_key # error 'method' missing
+      def enclose(*names, &block)
+        define_initializer_with_block(block) unless block.nil?
+
+        define_initializer_with_names(names)
+      end
+  
+      private
+
+      def define_initializer_with_block(block)
+        @initializer = block
+        define_method :initialize, &block
+      end
+
+      def define_initializer_with_names(names)
+        @initializer_arity = names.length
+
+        names.each do |name|
+          attr_reader name
+        end
+
+        define_method :initialize do |*args|
+          names.each_with_index do |name, i|
+            instance_variable_set(:"@#{name}", args[i])
+          end
         end
       end
     end
