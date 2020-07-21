@@ -86,7 +86,7 @@ module Invokable
       #   TwitterPater.new(API_KEY).call(User.find(1))
       #   TwitterPater.new(API_KEY).api_key # error 'method' missing
       def enclose(*names, &block)
-        define_initializer_with_block(block) unless block.nil?
+        return define_initializer_with_block(block) unless block.nil?
 
         define_initializer_with_names(names)
       end

@@ -5,11 +5,7 @@ RSpec.describe Invokable::Command do
   class PersonBuilder
     include Invokable::Command
 
-    attr_reader :department
-
-    enclose do |department|
-      @department = department
-    end
+    enclose :department
 
     def call(name, dob)
       { name: name, dob: dob, department: @department }
@@ -36,6 +32,22 @@ RSpec.describe Invokable::Command do
 
     departments = [:it, :hr, :accounting]
     expect(departments.map(&PersonBuilder).map(&:department)).to eq departments
+  end
+
+  context '.enclose' do
+    class Block
+      include Invokable::Command
+
+      attr_reader :test
+
+      enclose do |test|
+        @test = test
+      end
+    end
+
+    it 'should initilize state in instances when passed a block' do
+      expect(Block.new(1).test).to eq 1
+    end
   end
 
   context '.arity' do
