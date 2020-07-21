@@ -54,9 +54,7 @@ require 'invokable/command'
 class TwitterPoster
   include Invokable::Command
 
-  enclose do |model|
-    @model = model
-  end
+  enclose :model
 
   def call(user)
     # do the dirt
