@@ -141,6 +141,7 @@ Returns a proc that is a composition of this invokable and the given invokable.
 
 ## See Also
 
+  - [Closures and Objects are Equivalent](http://wiki.c2.com/?ClosuresAndObjectsAreEquivalent)
   - [Clojure](https://clojure.org)
   - [Arc](http://www.arclanguage.org)
 
