@@ -1,6 +1,7 @@
 require 'invokable/version'
 require 'invokable/core'
 require 'invokable/compose'
+require 'invokable/reduce'
 
 # TODO: make use of Gem::Version
 if RUBY_VERSION.split('.').take(2).join('.').to_f < 2.6

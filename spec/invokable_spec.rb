@@ -1,6 +1,41 @@
 RSpec.describe Invokable do
   include Gen::Test
 
+  class Add
+    include Invokable
+    def call(a, b)
+      a + b
+    end
+  end
+
+  class Double
+    include Invokable
+    def call(x)
+      x + x
+    end
+  end
+
+  class Sq
+    include Invokable
+    def call(x)
+      x * x
+    end
+  end
+
+  class Arity0
+    include Invokable
+    def call
+      []
+    end
+  end
+
+  class Arity3
+    include Invokable
+    def call(a, b, c)
+      [a, b, c]
+    end
+  end
+
   context 'Hash#to_proc' do
     it "should return a proc that maps a hash's keys to it's values" do
       number_names = { 1 => "One", 2 => "Two", 3 => "Three" }
@@ -70,24 +105,10 @@ RSpec.describe Invokable do
   end
 
   context 'Compose' do
-    class Add
-      include Invokable
-      def call(x)
-        x + x
-      end
-    end
-
-    class Sq
-      include Invokable
-      def call(x)
-        x * x
-      end
-    end
-
     context '<<' do
       it 'should compose to the left' do
         for_all Integer do |int|
-          expect((Add.new << Sq.new).call(int)).to eq((int * int) + (int * int))
+          expect((Double.new << Sq.new).call(int)).to eq((int * int) + (int * int))
         end
       end
     end
@@ -95,22 +116,22 @@ RSpec.describe Invokable do
     context '>>' do
       it 'should compose to the right' do
         for_all Integer do |int|
-          expect((Add.new >> Sq.new).call(int)).to eq((int + int) * (int + int))
+          expect((Double.new >> Sq.new).call(int)).to eq((int + int) * (int + int))
         end
       end
     end
   end
 
   context 'Core#arity' do
-    class Arity
-      include Invokable
-
-      def call(a, b, c)
-      end
-    end
-
     it 'should return the arity of the call method' do
-      expect(Arity.new.arity).to eq 3
+      expect(Arity0.new.arity).to eq Arity0.new.call.length
+      expect(Arity3.new.arity).to eq Arity3.new.call(1, 2, 3).length
+    end
+  end
+
+  context 'reduce and friends' do
+    it '' do
+      expect(Add.new.reduce([1, 2, 3])).to eq 6
     end
   end
 end
