@@ -1,9 +1,9 @@
 require 'invokable'
-require 'invokable/command'
+require 'invokable/closure'
 
-RSpec.describe Invokable::Command do
+RSpec.describe Invokable::Closure do
   class PersonBuilder
-    include Invokable::Command
+    include Invokable::Closure
 
     enclose :department
 
@@ -36,7 +36,7 @@ RSpec.describe Invokable::Command do
 
   context '.enclose' do
     class Block
-      include Invokable::Command
+      include Invokable::Closure
 
       attr_reader :test
 
