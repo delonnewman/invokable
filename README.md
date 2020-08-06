@@ -67,7 +67,7 @@ end
 TwitterPoster.call(Model.find(1)) # => #<TwitterPoster ...>
 TwitterPoster.call(Model.find(1), current_user) # => #<TwitterStatus ...>
 
-# both the class and it's instances can be used any where Procs are.
+# both the class and it's instances can be used anywhere Procs are.
 
 Model.where(created_at: Date.today).map(&TwitterPoster) # => [#<TwitterPoster ...>, ...]
 ```
