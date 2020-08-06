@@ -40,7 +40,7 @@ RSpec.describe Invokable::Closure do
 
       attr_reader :test
 
-      enclose do |test|
+      def initialize(test)
         @test = test
       end
     end

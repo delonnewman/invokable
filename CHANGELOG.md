@@ -9,3 +9,11 @@
 ## 0.5.0
 
 - Added `Invokable::Command` and `Invokable::Core#arity`
+
+## 0.5.2
+
+- `Invokable::Command` deprecated in favor of `Invokable::Closure`.
+
+## 0.6.0
+
+- `Invokable::Closure` deprecated comparable behavior has been added to `Invokable` itself.
