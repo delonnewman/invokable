@@ -144,7 +144,9 @@ RSpec.describe Invokable do
       expect(person[:name]).to eq name
       expect(person[:dob]).to eq dob
       expect(person[:department]).to eq dept
-  
+    end
+
+    it 'should be invokable' do
       departments = [:it, :hr, :accounting]
       expect(departments.map(&PersonBuilder).map(&:department)).to eq departments
     end

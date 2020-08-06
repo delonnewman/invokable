@@ -12,6 +12,8 @@ module Invokable
   def self.included(base)
     base.include(Invokable::Core)
     base.include(Invokable::Compose)
+    base.extend(Invokable::Core)
+    base.extend(Invokable::Compose)
     base.extend(ClassMethods)
   end
 
