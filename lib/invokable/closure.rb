@@ -4,6 +4,7 @@ module Invokable
   # @see https://ruby-doc.org/core-2.7.0/Proc.html#method-i-curry Proc#curry
   #
   # @version 0.5.2
+  # @deprecated These features are included in the Invokable by default now.
   module Closure
     def self.included(klass)
       klass.include(Invokable)
@@ -31,9 +32,7 @@ module Invokable
       #
       # @return [Integer]
       def initializer_arity
-        return @initializer_arity if @initializer_arity
-
-        @initializer ? @initializer.arity : 0
+        instance_method(:initialize).arity
       end
   
       # Handle automatic currying--will accept either the initializer arity or the total arity of the class. If

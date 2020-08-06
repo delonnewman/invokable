@@ -49,12 +49,13 @@ User.all.map(&data_for_user)
 ```ruby
 # command objects that enclose state, can be treated as automatically curried functions.
 require 'invokable'
-require 'invokable/closure'
 
 class TwitterPoster
-  include Invokable::Closure
+  include Invokable
 
-  enclose :model
+  def initialize(model)
+    @model = model
+  end
 
   def call(user)
     # do the dirt
@@ -75,7 +76,6 @@ Use as much or a little as you need:
 
 ```ruby
 require 'invokable'         # loads Invokable module
-require 'invokable/closure' # loads Invokable::Closure module
 require 'invokable/hash'    # loads hash patch
 require 'invokable/array'   # loads array patch
 require 'invokable/set'     # loads set patch
