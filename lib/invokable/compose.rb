@@ -6,8 +6,8 @@ module Invokable
     #
     # @return [Proc]
     def <<(invokable)
-      Proc.new do |*args|
-        call(invokable.call(*args))
+      lambda do |*args|
+        call(Invokable.coerce(invokable).call(*args))
       end
     end
 
@@ -17,8 +17,8 @@ module Invokable
     #
     # @return [Proc]
     def >>(invokable)
-      Proc.new do |*args|
-        invokable.call(call(*args))
+      lambda do |*args|
+        Invokable.coerce(invokable).call(call(*args))
       end
     end
   end
