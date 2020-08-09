@@ -115,9 +115,10 @@ module Invokable
     # @see arity
     # @see initializer_arity
     def call(*args)
-      if args.length == initializer_arity
-        new(*args)
-      elsif args.length == arity
+      return new.call   if arity == 0
+      return new(*args) if args.length == initializer_arity
+
+      if args.length == arity
         init_args = args.slice(0, initializer_arity)
         call_args = args.slice(initializer_arity, args.length)
         new(*init_args).call(*call_args)
