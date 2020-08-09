@@ -7,11 +7,16 @@ module Invokable
   extend Invokable::Helpers
 
   def self.included(base)
-    base.include(Core)
-    base.extend(Core)
+    INCLUDED_MODULES.each do |mod|
+      base.include(mod)
+      base.extend(mod)
+    end
     base.extend(ClassMethods)
-    base.include(Helpers)
   end
+
+  private
+
+  INCLUDED_MODULES = [Core, Helpers].freeze
 
   module ClassMethods
     # Return the "total" arity of the class (i.e. the arity of the initializer and the arity of the call method)
