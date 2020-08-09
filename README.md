@@ -72,6 +72,18 @@ TwitterPoster.call(Model.find(1), current_user) # => #<TwitterStatus ...>
 Model.where(created_at: Date.today).map(&TwitterPoster) # => [#<TwitterPoster ...>, ...]
 ```
 
+```ruby
+# Higher-order utility functions that can be used with any object that responds to :call or :to_proc
+Invokable.juxtapose(:first, :count).('A'..'Z') # => ["A", 26]
+
+Invokable.knit(:upcase, :downcase).(['FoO', 'BaR']) # => ["FOO", "bar"]
+
+Invokable.juxtapose(:sum, -> (xs) { xs.reduce(:*) }, :min, :max).([3, 4, 6]) # => [13, 72, 3, 6]
+
+[:a, :b, :c, :d].map(&Invokable.juxtapose(Invokable.identity, Invokable.compose(:to_s, :upcase))).to_h
+# => {:a => "A", :b => "B", :c => "C", :d => "D"} 
+```
+
 Use as much or a little as you need:
 
 ```ruby

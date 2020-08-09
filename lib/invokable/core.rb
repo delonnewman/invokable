@@ -45,5 +45,23 @@ module Invokable
     def arity
       method(:call).arity
     end
+
+    def apply(array)
+      call(*array)
+    end
+
+    def [](*args)
+      call(*args)
+    end
+
+    def ===(obj)
+      call(obj)
+    end
+
+    def &(invokable)
+      lambda do |*args|
+        [self.call(*args), Invokable.coerce(invokable).call(*args)].flatten
+      end
+    end
   end
 end
