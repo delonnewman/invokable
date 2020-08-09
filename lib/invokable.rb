@@ -1,18 +1,12 @@
-require 'core_ext'
 require 'invokable/version'
 require 'invokable/core'
 require 'invokable/compose'
-
-# TODO: make use of Gem::Version
-if RUBY_VERSION.split('.').take(2).join('.').to_f < 2.6
-  require 'invokable/proc'
-  require 'invokable/method'
-end
+require 'core_ext'
 
 module Invokable
   DEFAULT_MODULES = [
     Invokable::Core,
-    Invokable::Compose,
+    Invokable::Compose
   ].freeze
 
   def self.included(base)
@@ -20,22 +14,30 @@ module Invokable
       base.include(mod)
       base.extend(mod)
     end
-
     base.extend(ClassMethods)
   end
 
+  # Return a proc that returns the value that is passed to it.
+  #
+  # @return [Proc]
   def self.identity
     lambda do |x|
       x
     end
   end
 
+  # Return a proc that will always return the value given it.
+  #
+  # @return [Proc]
   def self.constantly(x)
     lambda do
       x
     end
   end
 
+  # If the invokable passed responds to :call it will be returned. If
+  # it responds to :to_proc :to_proc is called and the resulting proc
+  # is returned. Otherwise a TypeError will be thrown.
   def self.coerce(invokable)
     return invokable         if invokable.respond_to?(:call)
     return invokable.to_proc if invokable.respond_to?(:to_proc)
@@ -43,6 +45,13 @@ module Invokable
     raise TypeError, "#{invokable.inspect} is not a valid invokable"
   end
 
+  # Return a proc that passes it's arguments to the given invokables and returns an array of results.
+  # The invokables passed will be coerced before they are called (see {coerce}).
+  #
+  # @example
+  #   juxtapose(:first, :count).call('A'..'Z') # => ["A", 26]
+  #
+  # @return [Proc]
   def self.juxtapose(*invokables)
     lambda do |*args|
       invokables.map do |invokable|
@@ -51,6 +60,14 @@ module Invokable
     end
   end
 
+  # A relative of {juxtapose}--return a proc that takes a collection and calls the invokables
+  # on their corresponding values (in sequence) in the collection. The invokables passed
+  # will be coerced before they are called (see {coerce}).
+  #
+  # @example
+  #   knit(:upcase, :downcase).call(['FoO', 'BaR']) # => ["FOO", "bar"]
+  # 
+  # @return [Proc]
   def self.knit(*invokables)
     lambda do |enumerable|
       results = []
@@ -63,7 +80,13 @@ module Invokable
     end
   end
   
-  # right-to-left
+  # Return a proc that is a composition of the given invokables from right-to-left. The invokables
+  # passed will be coerced before they are called (see {coerce}).
+  #
+  # @example
+  #   compose(:to_s, :upcase).call(:this_is_a_test) # => "THIS_IS_A_TEST"
+  #
+  # @return [Proc]
   def self.compose(*invokables)
     return identity              if invokables.empty?
     return coerce(invokables[0]) if invokables.count == 1

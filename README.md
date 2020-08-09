@@ -116,39 +116,6 @@ Or install it yourself as:
 
     > gem install invokable
 
-## API
-
-### `to_proc => Proc`
-
-```ruby
-hash = { a: 1, b, 2 }
-hash.class          # => Hash
-hash.to_proc.class  # => Proc
-[:a, :b].map(&hash) # => [1, 2]
-```
-
-Convert an object into a proc. When the `Invokable` module is included in a class it will do this by
-returning a proc that passes it's arguments to the object's `call` method. When `invokable/data` is
-loaded `Hash#call` is mapped to `Hash#dig`, `Array#call` is mapped to `Array#at`, and `Set#call`
-is mapped to `Set#include?`.
-
-### `curry(arity = nil) => Proc`
-
-Returns a curried proc. If the `arity` is given, it determines the number of arguments.
-(see [Proc#curry](https://ruby-doc.org/core-2.7.0/Proc.html#method-i-curry)).
-
-### `memoize => Proc`
-
-Returns a memoized proc, that is, a proc that caches it's return values by it's arguments.
-
-### `<<(invokable) => Proc`
-
-Returns a proc that is a composition of this invokable and the given invokable.
-
-### `>>(invokable) => Proc`
-
-Returns a proc that is a composition of this invokable and the given invokable.
-
 ## See Also
 
   - [Closures and Objects are Equivalent](http://wiki.c2.com/?ClosuresAndObjectsAreEquivalent)

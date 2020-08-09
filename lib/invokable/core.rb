@@ -46,22 +46,15 @@ module Invokable
       method(:call).arity
     end
 
-    def apply(array)
-      call(*array)
-    end
-
+    # For Proc compatibility, is an alias of call.
     def [](*args)
       call(*args)
     end
 
+    # Call invokable with one argument, allows invocables to be used in case statements
+    # and Enumerable#grep.
     def ===(obj)
       call(obj)
-    end
-
-    def &(invokable)
-      lambda do |*args|
-        [self.call(*args), Invokable.coerce(invokable).call(*args)].flatten
-      end
     end
   end
 end
