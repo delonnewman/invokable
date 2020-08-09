@@ -1,6 +1,13 @@
 module Invokable
+  # A collection of helper methods for working with invokables where they accept and invokable
+  # as an argument they will "coerce" the value (see {coerce}). This enables any method that
+  # implements `call` or `to_proc` to be treated as an invokable.
+  #
+  # @version 0.7.0
   module Helpers
     # Return a proc that returns the value that is passed to it.
+    #
+    # @version 0.7.0
     #
     # @return [Proc]
     def identity
@@ -11,6 +18,8 @@ module Invokable
   
     # Return a proc that will always return the value given it.
     #
+    # @version 0.7.0
+    #
     # @return [Proc]
     def always(x)
       lambda do
@@ -18,9 +27,10 @@ module Invokable
       end
     end
   
-    # If the invokable passed responds to :call it will be returned. If
-    # it responds to :to_proc :to_proc is called and the resulting proc
-    # is returned. Otherwise a TypeError will be raised.
+    # If the invokable passed responds to :call it will be returned. If it responds to to_proc to_proc
+    # is called and the resulting proc is returned. Otherwise a TypeError will be raised.
+    #
+    # @version 0.7.0
     def coerce(invokable)
       return invokable         if invokable.respond_to?(:call)
       return invokable.to_proc if invokable.respond_to?(:to_proc)
@@ -30,6 +40,8 @@ module Invokable
   
     # Return a proc that passes it's arguments to the given invokables and returns an array of results.
     # The invokables passed will be coerced before they are called (see {coerce}).
+    #
+    # @version 0.7.0
     #
     # @example
     #   juxtapose(:first, :count).call('A'..'Z') # => ["A", 26]
@@ -47,6 +59,8 @@ module Invokable
     # A relative of {juxtapose}--return a proc that takes a collection and calls the invokables
     # on their corresponding values (in sequence) in the collection. The invokables passed
     # will be coerced before they are called (see {coerce}).
+    #
+    # @version 0.7.0
     #
     # @example
     #   knit(:upcase, :downcase).call(['FoO', 'BaR']) # => ["FOO", "bar"]
@@ -66,6 +80,8 @@ module Invokable
     
     # Return a proc that is a composition of the given invokables from right-to-left. The invokables
     # passed will be coerced before they are called (see {coerce}).
+    #
+    # @version 0.7.0
     #
     # @example
     #   compose(:to_s, :upcase).call(:this_is_a_test) # => "THIS_IS_A_TEST"
@@ -91,6 +107,8 @@ module Invokable
     # value that corresponds to it's place in the argument list. The invokable passed will be coerced
     # before they are called (see {coerce}).
     #
+    # @version 0.7.0
+    #
     # @example
     #   count = guarded(:count, [])
     #   count.call(nil) # => 0
@@ -111,6 +129,8 @@ module Invokable
     # Given an invokable and and a fewer number of arguments that the invokable takes return
     # a proc that will accept the rest of the arguments (i.e. a partialy applied function).
     # 
+    # @version 0.7.0
+    #
     # @return [Proc]
     def partial(invokable, *args)
       lambda do |*other_args|
