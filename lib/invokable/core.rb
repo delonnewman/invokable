@@ -1,13 +1,16 @@
+require_relative 'compose'
+
 module Invokable
   module Core
+    include Compose
+
     # If object responds to `call` convert into a Proc forwards it's arguments along to `call`.
     #
     # @see https://ruby-doc.org/core-2.7.0/Proc.html#method-i-call Proc#call
     # @return [Proc]
     def to_proc
       if respond_to?(:call)
-        # TODO: Would method(:call) be more performant? We need benchmarks.
-        Proc.new do |*args|
+        lambda do |*args|
           call(*args)
         end
       else
@@ -31,7 +34,7 @@ module Invokable
     #
     # @return [Proc]
     def memoize
-      Proc.new do |*args|
+      lambda do |*args|
         @memo ||= {}
         @memo[args.hash] ||= call(*args)
       end

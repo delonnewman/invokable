@@ -1,19 +1,36 @@
 # Change Log
 
-## 0.4.2
+## 0.7.0
 
-- `invokable/array` is no longer loaded with `invokable/data`.
-   This created a bit of havok in a few places. Including breaking
-   puma bootup in Rails 5.2.4.1.
+- Added helper methods `juxtapose`, `knit`, `compose`, `identity`, `always`, `guarded`, `partial`, and `coerce`
+  that can be used as module functions on `Invokable` or in classes that mixin the `Invokable` module.
 
-## 0.5.0
+- For classes whose initialize method takes no arguments, when the class method `call` is called it will
+  initialize the class and call it's `call` method.
 
-- Added `Invokable::Command` and `Invokable::Core#arity`
+- `[]` and `===` are added to classed that mixin `Invokable` for better `Proc` compatibility.
+
+- `Array`, `Hash` and `Set` patches no longer include the invokable methods, they simply add `to_proc`.
+
+- When `invokable/data` is required the array patch is also loaded.
+
+- All the methods that take an invokable will "coerce" the invokable by simply returning it if it implements `call`
+  or coercing it into a proc if it implements `to_proc`.
+
+## 0.6.0
+
+- `Invokable::Closure` deprecated comparable behavior has been added to `Invokable` itself.
 
 ## 0.5.2
 
 - `Invokable::Command` deprecated in favor of `Invokable::Closure`.
 
-## 0.6.0
+## 0.5.0
 
-- `Invokable::Closure` deprecated comparable behavior has been added to `Invokable` itself.
+- Added `Invokable::Command` and `Invokable::Core#arity`
+
+## 0.4.2
+
+- `invokable/array` is no longer loaded with `invokable/data`.
+   This created a bit of havok in a few places. Including breaking
+   puma bootup in Rails 5.2.4.1.
