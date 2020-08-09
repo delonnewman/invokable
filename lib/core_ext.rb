@@ -1,11 +1,9 @@
-class Proc
-  def &(invokable)
-    lambda do |*args|
-      [self.call(*args), Invokable.coerce(invokable).call(*args)].flatten
-    end
+if RUBY_VERSION.split('.').take(2).join('.').to_f < 2.6
+  class Proc
+    include Invokable::Compose
   end
 
-  def apply(array)
-    call(*array)
+  class Method
+    include Invokable::Compose
   end
 end
