@@ -1,10 +1,9 @@
 module Invokable
   # Treat classes as curried functions
   #
-  # @see https://ruby-doc.org/core-2.7.0/Proc.html#method-i-curry Proc#curry
-  #
   # @version 0.5.2
-  # @deprecated These features are included in the Invokable by default now.
+  #
+  # @deprecated These features are included in the module {Invokable} by default now.
   module Closure
     def self.included(klass)
       klass.include(Invokable)

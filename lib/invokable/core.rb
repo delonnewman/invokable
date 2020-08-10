@@ -1,29 +1,27 @@
 require_relative 'compose'
 
 module Invokable
+  # The core methods that are mixed into classes at a class and instance level when they
+  # include {Invokable}.
+  #
+  # @note This module should not be used directly.
   module Core
     include Compose
 
-    # If object responds to `call` convert into a Proc forwards it's arguments along to `call`.
+    # Return a Proc that forwards it's arguments along to call.
     #
-    # @see https://ruby-doc.org/core-2.7.0/Proc.html#method-i-call Proc#call
     # @return [Proc]
     def to_proc
-      if respond_to?(:call)
-        lambda do |*args|
-          call(*args)
-        end
-      else
-        raise "Don't know how to convert #{self.inspect} into a Proc"
+      lambda do |*args|
+        call(*args)
       end
     end
   
-    # Return a curried proc. If the optional `arity` argument is given, it determines the number of arguments.
+    # Return a curried proc. If the optional arity argument is given, it determines the number of arguments.
     # A curried proc receives some arguments. If a sufficient number of arguments are supplied, it passes the
     # supplied arguments to the original proc and returns the result. Otherwise, returns another curried proc
     # that takes the rest of arguments.
     #
-    # @see https://ruby-doc.org/core-2.7.0/Proc.html#method-i-curry Proc#curry
     # @param arity [Integer]
     # @return [Proc]
     def curry(arity = nil)
@@ -40,22 +38,26 @@ module Invokable
       end
     end
 
-    # Return the arity (i.e. the number of arguments) of the `call` method.
+    # Return the arity (i.e. the number of arguments) of the "call" method.
     #
     # @version 0.5.0
-    # @see https://ruby-doc.org/core-2.7.1/Proc.html#method-i-arity Proc#arity
+    #
     # @return [Integer]
     def arity
       method(:call).arity
     end
 
-    # For Proc compatibility, is an alias of call.
+    # For Proc compatibility, forwards it's arguments to "call".
+    #
+    # @version 0.7.0
     def [](*args)
       call(*args)
     end
 
     # Call invokable with one argument, allows invocables to be used in case statements
     # and Enumerable#grep.
+    #
+    # @version 0.7.0
     def ===(obj)
       call(obj)
     end
