@@ -3,6 +3,28 @@ require 'invokable/core'
 require 'invokable/helpers'
 require 'core_ext'
 
+# A module that attempts to generalize the notion of a first class function or Procs as they are often called
+# in Ruby. It enables any class and it's objects to be treated as first-class functions. It also provides helpers
+# includes helpers that can be used for performing higher-order operations on and object that can be treated
+# as a function.
+#
+# @example
+#   class TwitterPoster
+#     include Invokable
+#   
+#     def initialize(model)
+#       @model = model
+#     end
+#   
+#     def call(user)
+#       # do the dirt
+#       ...
+#       TwitterStatus.new(user, data)
+#     end
+#   end
+#   
+#   TwitterPoster.call(Model.find(1)) # => #<TwitterPoster ...>
+#   TwitterPoster.call(Model.find(1), current_user) # => #<TwitterStatus ...>
 module Invokable
   extend Invokable::Helpers
 
@@ -18,12 +40,13 @@ module Invokable
 
   INCLUDED_MODULES = [Core, Helpers].freeze
 
+  # The methods that are mixed into any class at the class level that includes {Invokable}.
+  #
+  # @note The module should not be used directly.
   module ClassMethods
     # Return the "total" arity of the class (i.e. the arity of the initializer and the arity of the call method)
     #
     # @version 0.6.0
-    # @see https://ruby-doc.org/core-2.7.1/Proc.html#method-i-arity Proc#arity
-    # @see initializer_arity
     #
     # @return [Integer]
     def arity
@@ -35,8 +58,8 @@ module Invokable
     # and return the results of the `call` method.
     #
     # @version 0.6.0
+    #
     # @see arity
-    # @see initializer_arity
     def call(*args)
       return new.call   if arity == 0
       return new(*args) if args.length == initializer_arity

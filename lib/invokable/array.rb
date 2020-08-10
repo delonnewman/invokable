@@ -1,4 +1,4 @@
-# Extend core Array by adding `to_proc` which will enable arrays to be treated as functions
+# Extend core Array by adding {to_proc} which will enable arrays to be treated as functions
 # of their indexes.
 class Array
   # Return a proc that takes the index of the array and returns the value at that index or nil
