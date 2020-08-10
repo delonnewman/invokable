@@ -1,7 +1,6 @@
 require "bundler/setup"
 require "invokable"
 require "invokable/data"
-require "invokable/array"
 require "gen/test"
 
 RSpec.configure do |config|

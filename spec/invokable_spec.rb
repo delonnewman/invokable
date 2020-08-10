@@ -104,7 +104,6 @@ RSpec.describe Invokable do
   context 'Core#arity' do
     class Arity
       include Invokable
-
       def call(a, b, c)
       end
     end
