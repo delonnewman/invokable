@@ -1,11 +1,15 @@
 require 'set'
-require_relative 'core'
 
-# Extend stdlib Set object by aliasing it's `include?` method as `call`,
-# and including the `Invokable` module.
-#
-# @see https://ruby-doc.org/stdlib-2.7.0/libdoc/set/rdoc/Set.html#method-i-include-3F Set#include?
+# Extend stdlib Set object by adding {to_proc} which will allow a set to be treated as a function of
+# the membership of it's elements.
 class Set
-  include Invokable::Core
-  alias call include?
+  # Return a proc that takes an value and return true if the value is an element of the set, but returns
+  # false otherwise.
+  #
+  # @return [Proc]
+  def to_proc
+    lambda do |element|
+      include?(element)
+    end
+  end
 end
