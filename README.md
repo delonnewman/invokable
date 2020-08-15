@@ -153,7 +153,7 @@ Or install it yourself as:
 
 ## API Documentation
 
-https://www.rubydoc.info/gems/invokable
+[https://www.rubydoc.info/gems/invokable](https://www.rubydoc.info/gems/invokable)
 
 ## See Also
 
