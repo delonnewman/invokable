@@ -3,7 +3,7 @@
 
 # Invokable
 
-Objects are functions! Treat any Object, Class, Hashes, Arrays, and Sets as Procs (like Enumerable but for Procs)
+Objects are functions! Treat any Object or Class as a Proc (like Enumerable but for Procs)
 
 ## Synopsis
 
