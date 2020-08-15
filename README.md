@@ -151,6 +151,10 @@ Or install it yourself as:
 
     > gem install invokable
 
+## API Documentation
+
+https://www.rubydoc.info/gems/invokable
+
 ## See Also
 
   - [Closures and Objects are Equivalent](http://wiki.c2.com/?ClosuresAndObjectsAreEquivalent)
