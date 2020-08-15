@@ -1,28 +1,52 @@
 require 'invokable/version'
 require 'invokable/core'
-require 'invokable/compose'
+require 'invokable/helpers'
+require 'core_ext'
 
-# TODO: make use of Gem::Version
-if RUBY_VERSION.split('.').take(2).join('.').to_f < 2.6
-  require 'invokable/proc'
-  require 'invokable/method'
-end
-
+# A module that attempts to generalize the notion of a first class function or Procs as they are often called
+# in Ruby. It enables any class and it's objects to be treated as first-class functions. It also provides helpers
+# includes helpers that can be used for performing higher-order operations on and object that can be treated
+# as a function.
+#
+# @example
+#   class TwitterPoster
+#     include Invokable
+#   
+#     def initialize(model)
+#       @model = model
+#     end
+#   
+#     def call(user)
+#       # do the dirt
+#       ...
+#       TwitterStatus.new(user, data)
+#     end
+#   end
+#   
+#   TwitterPoster.call(Model.find(1)) # => #<TwitterPoster ...>
+#   TwitterPoster.call(Model.find(1), current_user) # => #<TwitterStatus ...>
 module Invokable
+  extend Invokable::Helpers
+
   def self.included(base)
-    base.include(Invokable::Core)
-    base.include(Invokable::Compose)
-    base.extend(Invokable::Core)
-    base.extend(Invokable::Compose)
+    INCLUDED_MODULES.each do |mod|
+      base.include(mod)
+      base.extend(mod)
+    end
     base.extend(ClassMethods)
   end
 
+  private
+
+  INCLUDED_MODULES = [Core, Helpers].freeze
+
+  # The methods that are mixed into any class at the class level that includes {Invokable}.
+  #
+  # @note The module should not be used directly.
   module ClassMethods
     # Return the "total" arity of the class (i.e. the arity of the initializer and the arity of the call method)
     #
     # @version 0.6.0
-    # @see https://ruby-doc.org/core-2.7.1/Proc.html#method-i-arity Proc#arity
-    # @see initializer_arity
     #
     # @return [Integer]
     def arity
@@ -34,12 +58,13 @@ module Invokable
     # and return the results of the `call` method.
     #
     # @version 0.6.0
+    #
     # @see arity
-    # @see initializer_arity
     def call(*args)
-      if args.length == initializer_arity
-        new(*args)
-      elsif args.length == arity
+      return new.call   if arity == 0
+      return new(*args) if args.length == initializer_arity
+
+      if args.length == arity
         init_args = args.slice(0, initializer_arity)
         call_args = args.slice(initializer_arity, args.length)
         new(*init_args).call(*call_args)
