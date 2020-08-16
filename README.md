@@ -123,6 +123,7 @@ Use as much or a little as you need
 
 ```ruby
 require 'invokable'         # loads Invokable module
+require 'invokable/helpers' # loads Invokable::Helpers module
 require 'invokable/hash'    # loads hash patch
 require 'invokable/array'   # loads array patch
 require 'invokable/set'     # loads set patch
