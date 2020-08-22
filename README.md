@@ -45,7 +45,7 @@ class FilterRecords
     @params = params
   end
 
-  def call(params)
+  def call(records)
     # do filtering return records
   end
 end
