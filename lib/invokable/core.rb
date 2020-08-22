@@ -1,4 +1,5 @@
 require_relative 'compose'
+require_relative 'reduceable'
 
 module Invokable
   # The core methods that are mixed into classes at a class and instance level when they
@@ -7,6 +8,7 @@ module Invokable
   # @note This module should not be used directly.
   module Core
     include Compose
+    include Reduceable
 
     # Return a Proc that forwards it's arguments along to call.
     #
