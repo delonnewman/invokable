@@ -7,36 +7,6 @@ Objects are functions! Treat any Object or Class as a Proc (like Enumerable but 
 
 ## Synopsis
 
-Hashes can be treated as functions of their keys
-
-```ruby
-require 'invokable'
-require 'invokable/hash'
-
-number_names = { 1 => "One", 2 => "Two", 3 => "Three" }
-[1, 2, 3, 4].map(&number_names) # => ["One", "Two", "Three", nil]
-```
-
-Arrays can be treated as functions of their indexes
-
-```ruby
-require 'invokable'
-require 'invokable/array'
-
-alpha = ('a'..'z').to_a
-[1, 2, 3, 4].map(&alpha) # => ["b", "c", "d", "e"]
-```
-
-Sets can be treated as predicates
-
-```ruby
-require 'invokable'
-require 'invokable/set'
-
-favorite_numbers = Set[3, Math::PI]
-[1, 2, 3, 4].select(&favorite_numbers) # => [3]
-```
-
 Objects that enclose state, can be treated as automatically curried functions.
 
 ```ruby
@@ -117,6 +87,36 @@ class Transformer
 end
 
 Transformer.call([:a, :b, :c, :d]) # => {:a => "A", :b => "B", :c => "C", :d => "D"} 
+```
+
+Hashes can be treated as functions of their keys
+
+```ruby
+require 'invokable'
+require 'invokable/hash'
+
+number_names = { 1 => "One", 2 => "Two", 3 => "Three" }
+[1, 2, 3, 4].map(&number_names) # => ["One", "Two", "Three", nil]
+```
+
+Arrays can be treated as functions of their indexes
+
+```ruby
+require 'invokable'
+require 'invokable/array'
+
+alpha = ('a'..'z').to_a
+[1, 2, 3, 4].map(&alpha) # => ["b", "c", "d", "e"]
+```
+
+Sets can be treated as predicates
+
+```ruby
+require 'invokable'
+require 'invokable/set'
+
+favorite_numbers = Set[3, Math::PI]
+[1, 2, 3, 4].select(&favorite_numbers) # => [3]
 ```
 
 Use as much or a little as you need
