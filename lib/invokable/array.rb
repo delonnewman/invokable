@@ -1,10 +1,13 @@
-require_relative 'core'
-
-# Extend core Array object by aliasing it's `[]` method as `call`,
-# and including the `Invokable` module.
-#
-# @see https://ruby-doc.org/core-2.7.0/Array.html#method-i-5B-5D Array#[]
+# Extend core Array by adding {to_proc} which will enable arrays to be treated as functions
+# of their indexes.
 class Array
-  include Invokable::Core
-  alias call []
+  # Return a proc that takes the index of the array and returns the value at that index or nil
+  # if there is no value at the given index.
+  #
+  # @return [Proc]
+  def to_proc
+    lambda do |index|
+      at(index)
+    end
+  end
 end

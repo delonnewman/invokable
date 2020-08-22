@@ -49,7 +49,7 @@ RSpec.describe Invokable do
   context 'Array#to_proc' do
     it "should return a proc that maps an array's indexes to it's values" do
       alpha = ('a'..'z').to_a
-      for i in (0..alpha.length - 1)
+      (0..alpha.length - 1).each do |i|
         expect(alpha.to_proc[i]).to eq(alpha[i])
       end
       expect(alpha.to_proc[alpha.length + (0..10).to_a.sample]).to be_nil
@@ -132,6 +132,79 @@ RSpec.describe Invokable do
   context 'reduce and friends' do
     it '' do
       expect(Add.new.reduce([1, 2, 3])).to eq 6
+    end
+  end
+
+  context 'classes as curried functions' do
+    class PersonBuilder
+      include Invokable
+  
+      def initialize(department)
+        @department = department
+      end
+  
+      def call(name, dob)
+        { name: name, dob: dob, department: @department }
+      end
+    end
+  
+    it 'should automatically curry' do
+      dept   = :it
+      name   = 'Dave Smith'
+      dob    = Date.new(1973, 9, 10)
+  
+      person = PersonBuilder.call(dept, name, dob)
+      expect(person[:name]).to eq name
+      expect(person[:dob]).to eq dob
+      expect(person[:department]).to eq dept
+  
+      it_worker_builder = PersonBuilder.call(dept)
+      expect(it_worker_builder).to be_instance_of PersonBuilder
+  
+      person = it_worker_builder.call(name, dob)
+      expect(person[:name]).to eq name
+      expect(person[:dob]).to eq dob
+      expect(person[:department]).to eq dept
+    end
+
+    it 'should be invokable' do
+      departments = [:it, :hr, :accounting]
+      expect(departments.map(&PersonBuilder).map(&:department)).to eq departments
+    end
+
+    context 'zero arity' do
+      class One
+        include Invokable
+
+        def call
+          1
+        end
+      end
+
+      class Identity
+        include Invokable
+
+        def call(x)
+          x
+        end
+      end
+
+      it 'should call the instance method if the initializer is arity zero' do
+        expect(One.call).to eq 1
+        expect(Identity.call(3)).to eq 3
+      end
+    end
+  
+    context '.arity' do
+      it 'should return the arity of the initializer and the call method' do
+        expect(PersonBuilder.arity).to eq 3
+      end
+    end
+  
+    context '#arity' do
+      it 'should return the arity of the call method' do
+        expect(PersonBuilder.call(:it).arity).to eq 2
+      end
     end
   end
 end
