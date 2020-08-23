@@ -123,8 +123,9 @@ module Invokable
         coerce(invokable).call(*new_args)
       end
     end
-    alias fnil guarded
-    alias nil_safe guarded
+    alias :fnil :guarded
+    alias :nil_safe :guarded
+    alias :guard :guarded
   
     # Given an invokable and and a fewer number of arguments that the invokable takes return
     # a proc that will accept the rest of the arguments (i.e. a partialy applied function).
@@ -137,5 +138,33 @@ module Invokable
         coerce(invokable).call(*(args + other_args))
       end
     end
+
+    def complement(invokable)
+      lambda do |*args|
+        !coerce(invokable).call(*args)
+      end
+    end
+    alias :negated :complement
+    alias :negate :complement 
+
+    # TODO: add 0 and 1 and cases
+    def conjoin(*invokables)
+      lambda do |x|
+        invokables.reduce(true) do |result, invokable|
+          result and coerce(invokable).call(x)
+        end
+      end
+    end
+    alias :and :conjoin
+
+    # TODO: add 0 and 1 and cases
+    def disjoin(*invokables)
+      lambda do |x|
+        invokables.reduce(nil) do |result, invokable|
+          result or coerce(invokable).call(x)
+        end
+      end
+    end
+    alias :or :disjoin
   end
 end
