@@ -1,5 +1,26 @@
 # Change Log
 
+## 0.7.1
+
+### Invokable::call
+
+When all the arguments of the initializer are passed and the instance method is zero arity the instance method will be called.
+
+```ruby
+class Greeter
+  def initialize(name)
+    @name = name
+  end
+
+  def call
+    "Hello #{name}"
+  end
+end
+
+Greeter.call("Jane") # => "Hello Jane"
+Greeter.call("John") # => #<Greeter ...> (before 0.7.1)
+```
+
 ## 0.7.0
 
 - Added helper methods `juxtapose`, `knit`, `compose`, `identity`, `always`, `guarded`, `partial`, and `coerce`

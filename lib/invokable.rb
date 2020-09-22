@@ -50,7 +50,7 @@ module Invokable
     #
     # @return [Integer]
     def arity
-      initializer_arity + instance_method(:call).arity
+      initializer_arity + invoker_arity
     end
 
     # Handle automatic currying--will accept either the initializer arity or the total arity of the class. If
@@ -61,8 +61,9 @@ module Invokable
     #
     # @see arity
     def call(*args)
-      return new.call   if arity == 0
-      return new(*args) if args.length == initializer_arity
+      return new.call        if arity == 0
+      return new(*args).call if args.length == initializer_arity && invoker_arity == 0
+      return new(*args)      if args.length == initializer_arity
 
       if args.length == arity
         init_args = args.slice(0, initializer_arity)
@@ -77,6 +78,10 @@ module Invokable
 
     def initializer_arity
       instance_method(:initialize).arity
+    end
+
+    def invoker_arity
+      instance_method(:call).arity
     end
   end
 end
