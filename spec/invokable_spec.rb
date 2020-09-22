@@ -159,12 +159,28 @@ RSpec.describe Invokable do
         end
       end
 
+      class AnotherOne
+        include Invokable
+
+        def initialize(one)
+          @one = one
+        end
+
+        def call
+          @one
+        end
+      end
+
       class Identity
         include Invokable
 
         def call(x)
           x
         end
+      end
+
+      it 'should call the instance method if the all the arguments for the initializer are given and the instance method is arity zero' do
+        expect(AnotherOne.call(1)).to eq 1
       end
 
       it 'should call the instance method if the initializer is arity zero' do
