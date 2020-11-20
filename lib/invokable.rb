@@ -50,7 +50,9 @@ module Invokable
     #
     # @return [Integer]
     def arity
-      initializer_arity + invoker_arity
+      return initializer_arity + invoker_arity if invoker_arity >= 0
+
+      (initializer_arity + invoker_arity.abs) * -1
     end
 
     # Handle automatic currying--will accept either the initializer arity or the total arity of the class. If
@@ -61,11 +63,13 @@ module Invokable
     #
     # @see arity
     def call(*args)
-      return new.call        if arity == 0
-      return new(*args).call if args.length == initializer_arity && invoker_arity == 0
+      raise ArgumentError, "variable length initializer methods are not supported by Invokable" if initializer_arity < 0
+
+      return new.call        if arity.zero?
+      return new(*args).call if args.length == initializer_arity && (invoker_arity.zero? || invoker_arity == -1)
       return new(*args)      if args.length == initializer_arity
 
-      if args.length == arity
+      if args.length == arity || invoker_arity < 0 && (args.length - initializer_arity) >= (invoker_arity.abs - 1)
         init_args = args.slice(0, initializer_arity)
         call_args = args.slice(initializer_arity, args.length)
         new(*init_args).call(*call_args)
@@ -73,8 +77,6 @@ module Invokable
         raise ArgumentError, "wrong number of arguments (given #{args.length}, expected #{initializer_arity} or #{arity})"
       end
     end
-
-    private
 
     def initializer_arity
       instance_method(:initialize).arity
