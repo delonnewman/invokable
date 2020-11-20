@@ -9,7 +9,3 @@ group :development do
   gem 'pry'
   gem 'yard'
 end
-
-group :test do
-  gem 'gen-test'
-end

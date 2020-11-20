@@ -1,6 +1,4 @@
 RSpec.describe Invokable do
-  include Gen::Test
-
   context 'Hash#to_proc' do
     it "should return a proc that maps a hash's keys to it's values" do
       number_names = { 1 => "One", 2 => "Two", 3 => "Three" }
@@ -49,17 +47,17 @@ RSpec.describe Invokable do
 
     context '<<' do
       it 'should compose to the left' do
-        for_all Integer do |int|
-          expect((Add.new << Sq.new).call(int)).to eq((int * int) + (int * int))
-        end
+        int = (1..100).to_a.sample
+        
+        expect((Add.new << Sq.new).call(int)).to eq((int * int) + (int * int))
       end
     end
 
     context '>>' do
       it 'should compose to the right' do
-        for_all Integer do |int|
-          expect((Add.new >> Sq.new).call(int)).to eq((int + int) * (int + int))
-        end
+        int = (1..100).to_a.sample
+
+        expect((Add.new >> Sq.new).call(int)).to eq((int + int) * (int + int))
       end
     end
   end
@@ -67,8 +65,7 @@ RSpec.describe Invokable do
   context 'Core#arity' do
     class Arity
       include Invokable
-      def call(a, b, c)
-      end
+      def call(a, b, c); end
     end
 
     it 'should return the arity of the call method' do
