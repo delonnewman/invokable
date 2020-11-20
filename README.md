@@ -1,4 +1,5 @@
 ![Ruby](https://github.com/delonnewman/invokable/workflows/Ruby/badge.svg)
+[![Build Status](https://travis-ci.com/delonnewman/invokable.svg?branch=master)](https://travis-ci.com/delonnewman/invokable)
 [![Gem Version](https://badge.fury.io/rb/invokable.svg)](https://badge.fury.io/rb/invokable)
 
 # Invokable
