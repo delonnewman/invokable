@@ -32,43 +32,6 @@ RSpec.describe Invokable do
     end
   end
 
-  context 'Core#memoize' do
-    class SlowServiceObject
-      include Invokable
-
-      attr_reader :duration
-
-      def initialize
-        @duration = (1..3).to_a.sample
-      end
-
-      def call(x)
-        sleep duration
-        x + 1
-      end
-    end
-
-    it 'should return a memoized proc' do
-      object = SlowServiceObject.new
-      memoized = object.memoize
-      for_all Integer do |int|
-        t0 = Time.now
-        y = object.call(int)
-        t1 = Time.now
-        y_ = memoized.call(int)
-        t2 = Time.now
-        y__ = memoized.call(int)
-        t3 = Time.now
-        expect((t1 - t0).round).to eq(object.duration)
-        expect((t2 - t1).round).to eq(object.duration)
-        expect((t3 - t2).round).to eq(0)
-        expect(y).to eq(y_)
-        expect(y).to eq(y__)
-        expect(object.call(int)).to eq(memoized.call(int))
-      end
-    end
-  end
-
   context 'Compose' do
     class Add
       include Invokable
@@ -188,6 +151,62 @@ RSpec.describe Invokable do
         expect(Identity.call(3)).to eq 3
       end
     end
+
+    context 'variable arity' do
+      class AddOrInc
+        include Invokable
+
+        def initialize(x)
+          @x = x
+        end
+
+        def call(y = 1)
+          @x + y
+        end
+      end
+
+      class Maybe3D
+        include Invokable
+
+        def initialize(x)
+          @x = x
+        end
+
+        def call(y, z = nil)
+          return [@x, y, z] if z
+
+          [@x, y]
+        end
+      end
+
+      class ThreeD
+        include Invokable
+
+        def call(y, x = 0, z = 0)
+          [y, x, z]
+        end
+      end
+
+      it 'should calculate the correct arity' do
+        expect(AddOrInc.arity).to eq -2
+        expect(AddOrInc.initializer_arity).to eq 1
+        expect(AddOrInc.invoker_arity).to eq -1
+      end
+
+      it 'should pass along variable arguments if the invoker method is variable arity' do
+        expect(AddOrInc.call(3)).to eq 4
+        expect(AddOrInc.call(5, 4)).to eq 9
+      end
+
+      it 'should handle non -1 variable arity methods' do
+        expect(Maybe3D.call(1, 2, 3)).to eq [1, 2, 3]
+        expect(Maybe3D.call(1, 2)).to eq [1, 2]
+
+        expect(ThreeD.call(1, 2, 3)).to eq [1, 2, 3]
+        expect(ThreeD.call(1, 2)).to eq [1, 2, 0]
+        expect(ThreeD.call(1)).to eq [1, 0, 0]
+      end
+    end
   
     context '.arity' do
       it 'should return the arity of the initializer and the call method' do
@@ -199,6 +218,44 @@ RSpec.describe Invokable do
       it 'should return the arity of the call method' do
         expect(PersonBuilder.call(:it).arity).to eq 2
       end
+    end
+  end
+
+  context 'Core#memoize' do
+    class SlowServiceObject
+      include Invokable
+
+      attr_reader :duration
+
+      def initialize
+        @duration = (1..3).to_a.sample
+      end
+
+      def call(x)
+        sleep duration
+        x + 1
+      end
+    end
+
+    it 'should return a memoized proc' do
+      object   = SlowServiceObject.new
+      memoized = object.memoize
+      int      = (1..10).to_a.sample
+
+      t0  = Time.now
+      y   = object.call(int)
+      t1  = Time.now
+      y_  = memoized.call(int)
+      t2  = Time.now
+      y__ = memoized.call(int)
+      t3  = Time.now
+
+      expect((t1 - t0).round).to eq(object.duration)
+      expect((t2 - t1).round).to eq(object.duration)
+      expect((t3 - t2).round).to eq(0)
+      expect(y).to eq(y_)
+      expect(y).to eq(y__)
+      expect(object.call(int)).to eq(memoized.call(int))
     end
   end
 end
