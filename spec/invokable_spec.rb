@@ -235,6 +235,33 @@ RSpec.describe Invokable do
       end
     end
 
+    class LastInitializer
+      include Invokable
+
+      def initialize(one, two, test:)
+        @one = one
+        @two = two
+        @test = test
+      end
+
+      def call(three)
+        { one: @one, two: @two, test: @test, three: three }
+      end
+    end
+
+    class LastArgument
+      include Invokable
+
+      def initialize(one, two)
+        @one = one
+        @two = two
+      end
+
+      def call(three:)
+        { one: @one, two: @two, three: three }
+      end
+    end
+
     it 'should pass the keyword arguments along' do
       result = ArgForwarder.call(1, 2, 3, a: 1, b: 2, c: 3)
       expect(result).to eq [1, 2, 3, { a: 1, b: 2, c: 3 }]
@@ -242,6 +269,15 @@ RSpec.describe Invokable do
       first, options = OptionForwarder.call(1, a: 1, b: 2, c: 3)
       expect(first).to be 1
       expect(options).to eq({ a: 1, b: 2, c: 3 })
+
+      curried = LastInitializer.call(1, 2, test: :testing)
+      expect(LastInitializer.arity).to be 4
+      expect(LastInitializer.initializer_arity).to be 3
+      expect(LastInitializer.invoker_arity).to be 1
+      expect(curried.call(4)).to eq({ one: 1, two: 2, test: :testing, three: 4 })
+
+      result = LastArgument.call(1, 2, three: :testing)
+      expect(result).to eq({ one: 1, two: 2, three: :testing })
     end
   end
 

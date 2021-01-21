@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'invokable/version'
 require 'invokable/core'
 require 'invokable/helpers'
@@ -65,23 +67,27 @@ module Invokable
     # @see arity
     def call(*args, **kwargs)
       initializer = initializer_arity
-      raise ArgumentError, "variable length initializer methods are not supported by Invokable" if initializer < 0
+      raise ArgumentError, "variable length initializer methods are not supported by Invokable try using `new' or `curry' instead" if initializer < 0
       raise ArgumentError, "block arguments are not supported by Invokable" if block_given?
       
       return new.call if arity.zero?
   
       argc    = kwargs.empty? ? args.length : args.length + 1
       invoker = invoker_arity
-      return new(*args, **kwargs).call if argc == initializer &&  invoker.zero?
-      return new(*args).call(**kwargs) if argc == initializer &&  invoker == -1
-      return new(*args)                if argc == initializer &&  kwargs.empty?
-      return new(*args, **kwargs)      if argc == initializer && !kwargs.empty?
+      return new(*args).call           if argc == initializer && invoker.zero? && kwargs.empty?
+      return new(*args, **kwargs).call if argc == initializer && invoker.zero?
+      return new(*args).call           if argc == initializer && invoker == -1 && kwargs.empty?
+      return new(*args).call(**kwargs) if argc == initializer && invoker == -1
+      return new(*args)                if argc == initializer && kwargs.empty?
+      return new(*args, **kwargs)      if argc == initializer
 
       if argc == arity || invoker_arity < 0 && (args.length - initializer) >= (invoker.abs - 1)
         init_args = args.slice(0, initializer)
         call_args = args.slice(initializer, args.length)
-        new(*init_args).call(*call_args, **kwargs)
+        return new(*init_args).call(*call_args) if kwargs.empty?
+        return new(*init_args).call(*call_args, **kwargs)
       else
+        raise ArgumentError, "wrong number of arguments (given #{args.length}, expected #{arity})" if initializer == arity
         raise ArgumentError, "wrong number of arguments (given #{args.length}, expected #{initializer} or #{arity})"
       end
     end
