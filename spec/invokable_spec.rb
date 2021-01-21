@@ -218,6 +218,33 @@ RSpec.describe Invokable do
     end
   end
 
+  context 'keyword arguments' do
+    class ArgForwarder
+      include Invokable
+
+      def call(*args)
+        args
+      end
+    end
+
+    class OptionForwarder
+      include Invokable
+
+      def call(one, **options)
+        [one, options]
+      end
+    end
+
+    it 'should pass the keyword arguments along' do
+      result = ArgForwarder.call(1, 2, 3, a: 1, b: 2, c: 3)
+      expect(result).to eq [1, 2, 3, { a: 1, b: 2, c: 3 }]
+
+      first, options = OptionForwarder.call(1, a: 1, b: 2, c: 3)
+      expect(first).to be 1
+      expect(options).to eq({ a: 1, b: 2, c: 3 })
+    end
+  end
+
   context 'Core#memoize' do
     class SlowServiceObject
       include Invokable
