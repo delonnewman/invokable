@@ -39,6 +39,7 @@ module Invokable
   private
 
   INCLUDED_MODULES = [Core, Helpers].freeze
+  private_constant :INCLUDED_MODULES
 
   # The methods that are mixed into any class at the class level that includes {Invokable}.
   #
@@ -62,19 +63,26 @@ module Invokable
     # @version 0.6.0
     #
     # @see arity
-    def call(*args)
-      raise ArgumentError, "variable length initializer methods are not supported by Invokable" if initializer_arity < 0
+    def call(*args, **kwargs)
+      initializer = initializer_arity
+      raise ArgumentError, "variable length initializer methods are not supported by Invokable" if initializer < 0
+      raise ArgumentError, "block arguments are not supported by Invokable" if block_given?
+      
+      return new.call if arity.zero?
+  
+      argc    = kwargs.empty? ? args.length : args.length + 1
+      invoker = invoker_arity
+      return new(*args, **kwargs).call if argc == initializer &&  invoker.zero?
+      return new(*args).call(**kwargs) if argc == initializer &&  invoker == -1
+      return new(*args)                if argc == initializer &&  kwargs.empty?
+      return new(*args, **kwargs)      if argc == initializer && !kwargs.empty?
 
-      return new.call        if arity.zero?
-      return new(*args).call if args.length == initializer_arity && (invoker_arity.zero? || invoker_arity == -1)
-      return new(*args)      if args.length == initializer_arity
-
-      if args.length == arity || invoker_arity < 0 && (args.length - initializer_arity) >= (invoker_arity.abs - 1)
-        init_args = args.slice(0, initializer_arity)
-        call_args = args.slice(initializer_arity, args.length)
-        new(*init_args).call(*call_args)
+      if argc == arity || invoker_arity < 0 && (args.length - initializer) >= (invoker.abs - 1)
+        init_args = args.slice(0, initializer)
+        call_args = args.slice(initializer, args.length)
+        new(*init_args).call(*call_args, **kwargs)
       else
-        raise ArgumentError, "wrong number of arguments (given #{args.length}, expected #{initializer_arity} or #{arity})"
+        raise ArgumentError, "wrong number of arguments (given #{args.length}, expected #{initializer} or #{arity})"
       end
     end
 
