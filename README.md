@@ -162,6 +162,10 @@ Or install it yourself as:
   - [Clojure](https://clojure.org)
   - [Arc](http://www.arclanguage.org)
 
+## Support
+
+Tested using MRI 2.4, 2.5, 2.6, 2.7, 3.0 and JRuby
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).

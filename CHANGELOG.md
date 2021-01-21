@@ -1,5 +1,11 @@
 # Change Log
 
+## 1.0.0
+
+- More robust testing
+- Better error handling
+- Keyword argument support
+
 ## 0.7.2
 
 Variable arity invoker methods are handled properly. Variable arity initializers will result in a more meaningful exception being raised.
