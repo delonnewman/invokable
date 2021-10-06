@@ -1,5 +1,6 @@
 ![Ruby](https://github.com/delonnewman/invokable/workflows/Ruby/badge.svg)
 [![Gem Version](https://badge.fury.io/rb/invokable.svg)](https://badge.fury.io/rb/invokable)
+[![codebeat badge](https://codebeat.co/badges/d5f47c2a-941f-42c1-a799-bc8169558745)](https://codebeat.co/projects/github-com-delonnewman-invokable-master)
 
 # Invokable
 
