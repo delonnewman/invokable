@@ -163,12 +163,14 @@ Or install it yourself as:
   - [Clojure](https://clojure.org)
   - [Arc](http://www.arclanguage.org)
 
-## Support
+## Compatibility
 
 Tested using MRI 2.4, 2.5, 2.6, 2.7, 3.0 and JRuby
 
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
+
+## Support
 
 <a href="https://www.buymeacoffee.com/delonnewman" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
