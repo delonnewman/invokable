@@ -1,4 +1,4 @@
-if RUBY_VERSION.split('.').take(2).join('.').to_f < 2.6
+if RUBY_VERSION.to_f < 2.6
   # Add {<<} and {>>} for right and left function composition.
   #
   # @note These methods were added to Ruby in version 2.6 so this patch will only be applied when running older versions.
