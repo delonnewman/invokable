@@ -30,7 +30,11 @@ module Invokable
     # If the invokable passed responds to :call it will be returned. If it responds to to_proc to_proc
     # is called and the resulting proc is returned. Otherwise a TypeError will be raised.
     #
+    # @param [#call] invokable
+    #
     # @version 0.7.0
+    #
+    # @return [#call, Proc]
     def coerce(invokable)
       return invokable         if invokable.respond_to?(:call)
       return invokable.to_proc if invokable.respond_to?(:to_proc)
@@ -40,6 +44,8 @@ module Invokable
   
     # Return a proc that passes it's arguments to the given invokables and returns an array of results.
     # The invokables passed will be coerced before they are called (see {coerce}).
+    #
+    # @param [Array<#call>] invokables
     #
     # @version 0.7.0
     #
@@ -59,6 +65,8 @@ module Invokable
     # A relative of {juxtapose}--return a proc that takes a collection and calls the invokables
     # on their corresponding values (in sequence) in the collection. The invokables passed
     # will be coerced before they are called (see {coerce}).
+    #
+    # @param [Array<#call>] invokables
     #
     # @version 0.7.0
     #
@@ -80,6 +88,8 @@ module Invokable
     
     # Return a proc that is a composition of the given invokables from right-to-left. The invokables
     # passed will be coerced before they are called (see {coerce}).
+    #
+    # @param [Array<#call>] invokables
     #
     # @version 0.7.0
     #
@@ -107,6 +117,9 @@ module Invokable
     # value that corresponds to it's place in the argument list. The invokable passed will be coerced
     # before they are called (see {coerce}).
     #
+    # @param [#call] invokable
+    # @param [Array] alternatives
+    #
     # @version 0.7.0
     #
     # @example
@@ -127,7 +140,10 @@ module Invokable
     alias nil_safe guarded
   
     # Given an invokable and and a fewer number of arguments that the invokable takes return
-    # a proc that will accept the rest of the arguments (i.e. a partialy applied function).
+    # a proc that will accept the rest of the arguments (i.e. a partially applied function).
+    #
+    # @param [#call] invokable
+    # @param [Array] args
     # 
     # @version 0.7.0
     #

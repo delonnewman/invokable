@@ -23,9 +23,14 @@ module Invokable
     # that takes the rest of arguments.
     #
     # @param arity [Integer]
+    #
     # @return [Proc]
     def curry(arity = nil)
-      to_proc.curry(arity)
+      if arity
+        to_proc.curry(arity)
+      else
+        to_proc.curry
+      end
     end
   
     # Return a memoized proc, that is, a proc that caches it's return values by it's arguments.
@@ -54,7 +59,7 @@ module Invokable
       call(*args)
     end
 
-    # Call invokable with one argument, allows invocables to be used in case statements
+    # Call invokable with one argument, allows invokables to be used in case statements
     # and Enumerable#grep.
     #
     # @version 0.7.0
