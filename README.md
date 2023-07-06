@@ -1,8 +1,5 @@
 ![Ruby](https://github.com/delonnewman/invokable/workflows/Ruby/badge.svg)
 [![Gem Version](https://badge.fury.io/rb/invokable.svg)](https://badge.fury.io/rb/invokable)
-[![Contact me on Codementor](https://www.codementor.io/m-badges/delonnewman/book-session.svg)](https://www.codementor.io/@delonnewman?refer=badge)
-
-<a href="https://www.buymeacoffee.com/delonnewman" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
 
 # Invokable
 
